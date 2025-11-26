@@ -80,7 +80,7 @@ mod utils {
     use std::sync::Arc;
 
     /// 解析指令，判断是否命中配置的命令
-    pub fn parse_command<'a>(text: &'a str, prefixes: &[String], commands: &[String]) -> bool {
+    pub fn parse_command(text: &str, prefixes: &[String], commands: &[String]) -> bool {
         let text = text.trim();
 
         // 如果有前缀配置，先去前缀
@@ -112,14 +112,14 @@ mod utils {
     pub fn get_reply_id(event: &Arc<MsgEvent>) -> Option<i32> {
         // 遍历消息段，寻找 reply 类型
         for seg in event.message.iter() {
-            if seg.type_ == "reply" {
-                if let Some(id_val) = seg.data.get("id") {
-                    if let Some(id_str) = id_val.as_str() {
-                        return id_str.parse::<i32>().ok();
-                    }
-                    if let Some(id_int) = id_val.as_i64() {
-                        return Some(id_int as i32);
-                    }
+            if seg.type_ == "reply"
+                && let Some(id_val) = seg.data.get("id")
+            {
+                if let Some(id_str) = id_val.as_str() {
+                    return id_str.parse::<i32>().ok();
+                }
+                if let Some(id_int) = id_val.as_i64() {
+                    return Some(id_int as i32);
                 }
             }
         }
@@ -132,14 +132,12 @@ mod utils {
         let mut urls = Vec::new();
         for seg in message_segments {
             // OneBot v11 标准图片类型
-            if let Some(type_) = seg.get("type").and_then(|t| t.as_str()) {
-                if type_ == "image" {
-                    if let Some(data) = seg.get("data") {
-                        if let Some(url) = data.get("url").and_then(|u| u.as_str()) {
-                            urls.push(url.to_string());
-                        }
-                    }
-                }
+            if let Some(type_) = seg.get("type").and_then(|t| t.as_str())
+                && type_ == "image"
+                && let Some(data) = seg.get("data")
+                && let Some(url) = data.get("url").and_then(|u| u.as_str())
+            {
+                urls.push(url.to_string());
             }
         }
         urls
