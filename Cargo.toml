@@ -5,7 +5,7 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 authors = ["Your Name <email@example.com>"]
 description = "Kovi 的表情包提取插件，支持引用表情包转图片保存。"
-categories = ["asynchronous", "chat-bot-plugin"]
+categories = ["asynchronous", "network-programming"]
 repository = "https://github.com/araea/kovi-plugin-sticker-saver"
 keywords = ["kovi", "kovi-plugin", "sticker", "image", "onebot"]
 
